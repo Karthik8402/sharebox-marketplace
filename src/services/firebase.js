@@ -4,12 +4,12 @@ import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { getFirestore, connectFirestoreEmulator } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBmanj74Hc95n-VgoVJeaICmdvjwxmyjfs", 
-  authDomain: "sharebox-app-3dfe2.firebaseapp.com",
-  projectId: "sharebox-app-3dfe2",
-  storageBucket: "sharebox-app-3dfe2.firebasestorage.app",
-  messagingSenderId: "759841978146",
-  appId: "1:759841978146:web:db03c97078d84c4593177b"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID
 };
 
 // Initialize Firebase
