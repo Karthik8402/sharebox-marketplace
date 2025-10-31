@@ -1,0 +1,205 @@
+/* src/index.css - Complete Fixed Version */
+@import "tailwindcss";
+
+/* Global theme variables */
+:root {
+  --toast-bg: #ffffff;
+  --toast-color: #1f2937;
+  color-scheme: light;
+}
+
+.dark {
+  --toast-bg: #1f2937;
+  --toast-color: #f9fafb;
+  color-scheme: dark;
+}
+
+/* Base styling */
+html {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: all 0.3s ease;
+  background-color: #ffffff;
+  color: #111827;
+}
+
+/* Dark mode body styling */
+.dark body {
+  background-color: #111827 !important;
+  color: #f9fafb !important;
+}
+
+/* Light mode explicit */
+.light body {
+  background-color: #ffffff !important;
+  color: #111827 !important;
+}
+
+/* Smooth transitions for all elements */
+* {
+  box-sizing: border-box;
+  transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 200ms;
+}
+
+/* ✅ FIX: Input text color in dark mode */
+.dark input,
+.dark textarea,
+.dark select {
+  color-scheme: dark;
+  color: #f9fafb !important; /* White text in dark mode */
+  background-color: #374151; /* Dark gray background */
+  border-color: #4b5563; /* Medium gray border */
+}
+
+.dark input::placeholder,
+.dark textarea::placeholder,
+.dark select::placeholder {
+  color: #9ca3af !important; /* Light gray placeholder */
+}
+
+/* Light mode input styling (explicit) */
+.light input,
+.light textarea,
+.light select,
+input,
+textarea,
+select {
+  color: #111827; /* Dark text in light mode */
+  background-color: #ffffff; /* White background */
+  border-color: #d1d5db; /* Light gray border */
+}
+
+.light input::placeholder,
+.light textarea::placeholder,
+.light select::placeholder,
+input::placeholder,
+textarea::placeholder,
+select::placeholder {
+  color: #6b7280; /* Medium gray placeholder */
+}
+
+/* Focus states */
+.dark input:focus,
+.dark textarea:focus,
+.dark select:focus {
+  background-color: #4b5563 !important;
+  border-color: #60a5fa !important;
+  color: #f9fafb !important;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  background-color: #ffffff !important;
+  border-color: #3b82f6 !important;
+  color: #111827 !important;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #f3f4f6;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background-color: #1f2937;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #d1d5db;
+  border-radius: 4px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background-color: #4b5563;
+}
+
+/* Focus styles */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px #3b82f6;
+}
+
+.dark button:focus-visible,
+.dark a:focus-visible,
+.dark input:focus-visible,
+.dark select:focus-visible,
+.dark textarea:focus-visible {
+  box-shadow: 0 0 0 2px #60a5fa;
+}
+
+/* Custom dot pattern */
+.dot-pattern {
+  background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.15) 1px, transparent 0);
+  background-size: 24px 24px;
+}
+
+/* Animation keyframes */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { 
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.6s ease-out;
+}
+
+/* ✅ Additional fixes for specific input types */
+.dark input[type="text"],
+.dark input[type="email"],
+.dark input[type="password"],
+.dark input[type="number"],
+.dark input[type="search"],
+.dark input[type="url"],
+.dark input[type="tel"] {
+  color: #f9fafb !important;
+  background-color: #374151 !important;
+}
+
+/* Search input specific fix */
+.dark input[type="search"]::-webkit-search-cancel-button,
+.dark input[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* Autofill styling fix */
+.dark input:-webkit-autofill,
+.dark input:-webkit-autofill:hover,
+.dark input:-webkit-autofill:focus {
+  -webkit-text-fill-color: #f9fafb !important;
+  -webkit-box-shadow: 0 0 0px 1000px #374151 inset !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
