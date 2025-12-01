@@ -12,6 +12,13 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_FIREBASE_APP_ID
 };
 
+// Validate config
+Object.keys(firebaseConfig).forEach(key => {
+  if (!firebaseConfig[key]) {
+    console.error(`Missing Firebase config key: ${key}`);
+  }
+});
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 

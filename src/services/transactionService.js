@@ -22,12 +22,28 @@ export async function createTransaction(transactionData) {
     const docRef = await addDoc(transactionsCollection, {
       ...transactionData,
       createdAt: serverTimestamp(),
-      updatedAt: serverTimestamp()
+      updatedAt: serverTimestamp(),
+      lastMessage: transactionData.message || "Started a new request",
+      lastMessageSenderId: transactionData.buyerId,
+      hasUnreadMessages: true
     });
 
     // Update item status to pending
     if (transactionData.itemId) {
       await updateItemStatus(transactionData.itemId, "pending");
+    }
+
+    // Send initial message to messages subcollection if message exists
+    if (transactionData.message && transactionData.message.trim()) {
+      const messagesCollection = collection(db, "transactions", docRef.id, "messages");
+      await addDoc(messagesCollection, {
+        text: transactionData.message,
+        senderId: transactionData.buyerId,
+        senderName: transactionData.buyerName,
+        type: 'text',
+        createdAt: serverTimestamp()
+      });
+      console.log("Initial message sent to subcollection for transaction:", docRef.id);
     }
 
     return docRef.id;
@@ -140,4 +156,47 @@ export async function getTransactionById(transactionId) {
     console.error("Error getting transaction:", error);
     throw error;
   }
+}
+
+// Send Message
+export async function sendMessage(transactionId, messageData) {
+  try {
+    const messagesCollection = collection(db, "transactions", transactionId, "messages");
+    await addDoc(messagesCollection, {
+      ...messageData,
+      createdAt: serverTimestamp()
+    });
+
+    // Update transaction last message and timestamp
+    const transactionRef = doc(db, "transactions", transactionId);
+    await updateDoc(transactionRef, {
+      lastMessage: messageData.text,
+      lastMessageSenderId: messageData.senderId,
+      updatedAt: serverTimestamp(),
+      hasUnreadMessages: true // You might want to handle read receipts more robustly
+    });
+
+  } catch (error) {
+    console.error("Error sending message:", error);
+    throw error;
+  }
+}
+
+// Subscribe to Messages (Real-time)
+import { onSnapshot } from "firebase/firestore";
+
+export function subscribeToMessages(transactionId, callback) {
+  const q = query(
+    collection(db, "transactions", transactionId, "messages"),
+    orderBy("createdAt", "asc")
+  );
+
+  return onSnapshot(q, (snapshot) => {
+    const messages = snapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data(),
+      createdAt: doc.data().createdAt?.toDate()
+    }));
+    callback(messages);
+  });
 }
